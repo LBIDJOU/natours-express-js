@@ -29,12 +29,12 @@ const createAndSendToken = (
           1000,
     ),
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
     sameSite:
       process.env.NODE_ENV === 'production'
         ? 'None'
         : 'Lax',
   };
+  if(req.secure) cookieOptions.secure = true
   res.cookie('jwt', token, cookieOptions);
   res.status(statusCode).json({
     status: 'success',
