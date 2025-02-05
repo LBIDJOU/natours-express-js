@@ -16,7 +16,7 @@ const createAndSendToken = (
   user,
   statusCode,
   res,
-  req
+  req,
 ) => {
   user.password = undefined;
   const token = generateToken(user._id);
@@ -35,7 +35,7 @@ const createAndSendToken = (
         ? 'None'
         : 'Lax',
   };
-  if(req.secure) cookieOptions.secure = true
+  if (req.secure) cookieOptions.secure = true;
   res.cookie('jwt', token, cookieOptions);
   res.status(statusCode).json({
     status: 'success',
@@ -58,7 +58,7 @@ exports.signUp = catchAsync(
     const url = `${req.protocol}://${req.get('host')}/my-account`;
     // console.log(url);
     await new Email(user, url).sendWelcome();
-    createAndSendToken(user, 201, res,req);
+    createAndSendToken(user, 201, res, req);
   },
 );
 
@@ -93,7 +93,7 @@ exports.logIn = catchAsync(
       );
     }
     // Send back token to the client
-    createAndSendToken(user, 200, res,req);
+    createAndSendToken(user, 200, res, req);
   },
 );
 
@@ -290,7 +290,7 @@ exports.resetPassword = catchAsync(
     await user.save();
     // 3) Update the passwordChangedAt field
     // 4) Log in the user by sending JWT token
-    createAndSendToken(user, 200, res,req);
+    createAndSendToken(user, 200, res, req);
   },
 );
 
@@ -322,6 +322,6 @@ exports.updatePassword = catchAsync(
       req.body.confirmPassword;
     await user.save();
     // 4) Update passwordChangedAt('auto') field && and log in the user again by sending JWT token
-    createAndSendToken(user, 200, res,req);
+    createAndSendToken(user, 200, res, req);
   },
 );
