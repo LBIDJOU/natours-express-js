@@ -62,8 +62,25 @@ var logOutBtn = document.querySelector('.nav__el--logout');
 var userDataForm = document.querySelector('.form-user-data');
 var userSettingsForm = document.querySelector('.form-user-settings');
 var checkoutBtn = document.querySelector('#book-tour');
+var searchField = document.querySelector('.nav__search-input');
 
 // Delegation
+
+if (searchField) {
+  searchField.addEventListener('input', function () {
+    var query = this.value.toLowerCase();
+    query === '' ? document.querySelector('.nav__search-btn').style.display = 'block' : document.querySelector('.nav__search-btn').style.display = 'none';
+    var tourCards = document.querySelectorAll('.card');
+    tourCards.forEach(function (card) {
+      var tourName = card.querySelector('.tour__name').textContent.toLowerCase();
+      if (tourName.includes(query)) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+}
 if (map) {
   var locations = JSON.parse(map.dataset.locations);
   (0,_mapBox__WEBPACK_IMPORTED_MODULE_0__.displayMap)(locations);

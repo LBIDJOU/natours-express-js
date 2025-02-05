@@ -21,7 +21,39 @@ const userSettingsForm = document.querySelector(
 const checkoutBtn =
   document.querySelector('#book-tour');
 
+const searchField = document.querySelector(
+  '.nav__search-input',
+);
+
 // Delegation
+
+if (searchField) {
+  searchField.addEventListener(
+    'input',
+    function () {
+      let query = this.value.toLowerCase();
+      query === ''
+        ? (document.querySelector(
+            '.nav__search-btn',
+          ).style.display = 'block')
+        : (document.querySelector(
+            '.nav__search-btn',
+          ).style.display = 'none');
+      let tourCards =
+        document.querySelectorAll('.card');
+      tourCards.forEach((card) => {
+        let tourName = card
+          .querySelector('.tour__name')
+          .textContent.toLowerCase();
+        if (tourName.includes(query)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    },
+  );
+}
 if (map) {
   const locations = JSON.parse(
     map.dataset.locations,
