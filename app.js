@@ -35,7 +35,8 @@ app.use(
 
 // Set security HTTP headers
 app.use(helmet({ contentSecurityPolicy: false }));
-
+//
+app.set("trust proxy", true);
 // Log the current node env
 // console.log(process.env.NODE_ENV);
 
