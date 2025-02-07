@@ -45,3 +45,53 @@ export const logout = async () => {
     );
   }
 };
+
+export const forgotPassword = async (email) => {
+  try {
+    const response = await axios({
+      method: 'POST',
+      url: '/api/v1/users/forgot-password',
+      data: {
+        email,
+      },
+    });
+    if (response.data.status === 'success') {
+      showAlert('success', response.data.message);
+      return true;
+    }
+  } catch (error) {
+    showAlert(
+      'error',
+      error.response.data.message,
+    );
+    return false;
+  }
+};
+
+export const resetPassword = async (
+  token,
+  userData,
+) => {
+  try {
+    const response = await axios({
+      method: 'PATCH',
+      url: `/api/v1/users/reset-password/${token}`,
+      data: userData,
+    });
+    if (response.data.status === 'success') {
+      showAlert(
+        'success',
+        'Your password has been reset successfully',
+      );
+      window.setTimeout(
+        () => (location.href = '/'),
+        1000,
+      );
+    }
+  } catch (error) {
+    showAlert(
+      'error',
+      error.response.data.message,
+    );
+  }
+};

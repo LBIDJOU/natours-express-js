@@ -1249,6 +1249,7 @@ body {
   /* Pseudo element (a visible thing that isn't really in the DOM).
       Also needs -ms- */
 }
+
 .form__input:focus {
   outline: none;
   border-bottom: 3px solid #55c57a;
@@ -1271,6 +1272,31 @@ body {
   margin-bottom: 0.75rem;
 }
 
+.actions__group{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+span.info p{
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  font-weight: 450;
+}
+.actions__group a {
+  text-decoration: none;
+  font-size: 1.6rem;
+  color: #55c57a;
+  font-weight: 600;
+}
+
+.msg--success{
+  color: #55c57a;
+}
+.msg--error{
+  color: #f73532;
+}
 .form__photo-upload {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1319,4 +1345,8 @@ body {
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
   -webkit-transform: translateY(-2px);
   transform: translateY(-2px);
+}
+.msg{
+  font-size: 2rem;
+  font-weight: 500;
 }
