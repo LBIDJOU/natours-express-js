@@ -43,21 +43,17 @@ exports.getTour = catchAsync(
 );
 
 //
-exports.getRegisterForm = catchAsync(
-  async (req, res, next) => {
-    res.status(200).render('register', {
-      title: 'Create an account',
-    });
-  },
-);
+exports.getRegisterForm = (req, res) => {
+  res.status(200).render('register', {
+    title: 'Create an account',
+  });
+};
 //
-exports.getLoginForm = catchAsync(
-  async (req, res, next) => {
-    res.status(200).render('login', {
-      title: 'Log into your account',
-    });
-  },
-);
+exports.getLoginForm = (req, res) => {
+  res.status(200).render('login', {
+    title: 'Log into your account',
+  });
+};
 
 //
 exports.getAccount = (req, res) => {
@@ -103,3 +99,20 @@ exports.getMyBookedTours = catchAsync(
     });
   },
 );
+
+//
+exports.getForgotPasswordPage = (req, res) => {
+  // Render forgot password page
+  res.status(200).render('forgotPassword', {
+    title: 'Forgot Password',
+  });
+};
+//
+exports.getResetPasswordForm = (req, res) => {
+  const { token } = req.params;
+  // Render forgot password page
+  res.status(200).render('resetPassword', {
+    title: 'Reset Password',
+    token,
+  });
+};
