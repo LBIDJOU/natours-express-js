@@ -4,10 +4,10 @@ block content
     main.main
         .login-form
             h2.heading-secondary.ma-bt-lg Create your account
-            form.form
+            form.form.register__form
                 .form__group
                     label.form__label(for='username') Username
-                    input#email.form__input(type='email', placeholder='Enter your username', required)
+                    input#name.form__input(type='text', placeholder='Enter your username', required)
                 .form__group
                     label.form__label(for='email') Email address
                     input#email.form__input(type='email', placeholder='you@example.com', required)
@@ -16,6 +16,8 @@ block content
                     input#password.form__input(type='password', placeholder='••••••••', required, minlength='8')
                 .form__group.ma-bt-md
                     label.form__label(for='confirm password') Confirm Password
-                    input#password.form__input(type='password', placeholder='••••••••', required, minlength='8')
+                    input#password-confirm.form__input(type='password', placeholder='••••••••', required, minlength='8')
+                    span.actions__group 
+                        a(href='/login') Already registered? Login
                 .form__group
                     button.btn.btn--green Register

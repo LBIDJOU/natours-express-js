@@ -11,5 +11,8 @@ block content
                 .form__group.ma-bt-md
                     label.form__label(for='password') Password
                     input#password.form__input(type='password', placeholder='••••••••', required, minlength='8')
+                    span.actions__group
+                        a.reset-passowrd(href='/register') Create an account
+                        a.forgot-passowrd(href='/forgot-password') Forgot password?
                 .form__group
                     button.btn.btn--green Login

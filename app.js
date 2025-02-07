@@ -17,6 +17,7 @@ const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const viewRouter = require('./routes/viewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
+const bookingController = require('./controllers/bookingController');
 
 // Start express app
 const app = express();
@@ -26,7 +27,29 @@ app.set('views', path.join(__dirname, 'views'));
 
 // 1) GLOBAL MIDDLEWARES
 // Implement CORS
-app.use(cors());
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://natours-express-js.onrender.com',
+];
+app.use(
+  cors({
+    origin: function (origin, cb) {
+      if (
+        !origin ||
+        allowedOrigins.includes(origin)
+      ) {
+        cb(null, true);
+      } else {
+        cb(
+          new Error(
+            'Your are not allowed by CORS',
+          ),
+        );
+      }
+    },
+    credentials: true,
+  }),
+);
 
 // Serving static files
 app.use(
@@ -34,9 +57,43 @@ app.use(
 );
 
 // Set security HTTP headers
-app.use(helmet({ contentSecurityPolicy: false }));
-//
-app.set("trust proxy", true);
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "'unsafe-eval'",
+          'https://js.stripe.com',
+          'https://cdn.maptiler.com',
+          'blob:',
+        ],
+        workerSrc: ["'self'", 'blob:'],
+        connectSrc: [
+          "'self'",
+          'https://api.mapbox.com',
+          'https://events.mapbox.com',
+          'https://api.stripe.com',
+          'https://cdn.maptiler.com',
+          'https://api.maptiler.com',
+        ],
+        frameSrc: [
+          "'self'",
+          'https://js.stripe.com',
+        ],
+        imgSrc: [
+          "'self'",
+          'data:',
+          'https://*.mapbox.com',
+          'https://api.maptiler.com', // ✅ Allow MapTiler images
+        ],
+      },
+    },
+  }),
+);
+
 // Log the current node env
 // console.log(process.env.NODE_ENV);
 
@@ -44,6 +101,12 @@ app.set("trust proxy", true);
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+//
+app.post(
+  '/webhook-checkout',
+  express.raw({ type: 'application/json' }),
+  bookingController.webhookChekout,
+);
 
 // Limit requests from same API
 const limiter = rateLimit({

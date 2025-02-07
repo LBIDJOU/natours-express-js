@@ -42,7 +42,19 @@ router.post(
 );
 router.get(
   '/my-booked-tours',
+  // bookingController.createBookingCheckout,
   authController.authGuard,
   viewController.getMyBookedTours,
 );
+
+router.get(
+  '/forgot-password',
+  viewController.getForgotPasswordPage,
+);
+
+router.get(
+  '/reset-password/:token',
+  viewController.getResetPasswordForm,
+);
+
 module.exports = router;
