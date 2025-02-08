@@ -79,7 +79,7 @@ const createBookingCheckout = async (session) => {
   const userDoc = await User.findOne({
     email: session.customer_email,
   });
-  const user = userDoc ? userDoc.id : null;
+  const user = userDoc?.id || null;
   // Retrieve line items to get the price
   const lineItems =
     await stripe.checkout.sessions.listLineItems(
@@ -88,6 +88,7 @@ const createBookingCheckout = async (session) => {
   const price =
     lineItems.data[0].price_data.unit_amount /
     100;
+  console.log(tour, user, price);
   await Booking.create({ tour, user, price });
 };
 
@@ -115,11 +116,7 @@ exports.webhookChekout = async (
   ) {
     createBookingCheckout(
       event.data.object,
-    ).catch((err) =>
-      res
-        .status(400)
-        .send(`Webhook error : ${err.message}`),
-    );
+    ).catch((err) => console.log('Error:', err));
   }
   res.status(200).json({ received: true });
 };
