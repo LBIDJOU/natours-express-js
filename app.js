@@ -22,6 +22,9 @@ const bookingController = require('./controllers/bookingController');
 // Start express app
 const app = express();
 
+// 
+app.set('trust proxy', true);
+
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
