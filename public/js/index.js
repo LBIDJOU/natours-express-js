@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { displayMap } from './mapBox';
 import { register } from './register';
+import { showAlert } from './alerts';
 import {
   login,
   logout,
@@ -40,8 +41,12 @@ const resetPasswordForm = document.querySelector(
   '.reset__pass__form',
 );
 
+const alertMsg =
+  document.querySelector('body').dataset.alert;
 // Delegation
-
+if (alertMsg) {
+  showAlert('success', alertMsg, 15);
+}
 if (searchField) {
   searchField.addEventListener(
     'input',
