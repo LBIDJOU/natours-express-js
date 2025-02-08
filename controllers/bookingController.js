@@ -76,14 +76,21 @@ exports.createCheckoutSession = catchAsync(
 //
 const createBookingCheckout = async (session) => {
   const tour = session.client_reference_id;
-  const user = await User.findOne({
+  const userDoc = await User.findOne({
     email: session.customer_email,
-  }).id;
+  });
+  const user = userDoc ? userDoc.id : null;
+  // Retrieve line items to get the price
+  const lineItems =
+    await stripe.checkout.sessions.listLineItems(
+      session.id,
+    );
   const price =
-    session.line_items[0].price_data.unit_amount /
+    lineItems.data[0].price_data.unit_amount /
     100;
-  await Booking.create({tour, user, price});
+  await Booking.create({ tour, user, price });
 };
+
 exports.webhookChekout = async (
   req,
   res,
@@ -106,11 +113,15 @@ exports.webhookChekout = async (
   if (
     event.type === 'checkout.session.completed'
   ) {
-    await createBookingCheckout(
+    createBookingCheckout(
       event.data.object,
+    ).catch((err) =>
+      res
+        .status(400)
+        .send(`Webhook error : ${err.message}`),
     );
   }
-  res.status(200).json({ recieved: true });
+  res.status(200).json({ received: true });
 };
 
 // Get all bookings
