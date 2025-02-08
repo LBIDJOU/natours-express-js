@@ -39,7 +39,7 @@ exports.createCheckoutSession = catchAsync(
                 name: `${bookedTour.name} Tour`,
                 description: bookedTour.summary,
                 images: [
-                  `https://natours.dev/img/tours/${bookedTour.imageCover}`,
+                  `${req.protocol}://${req.get('host')}/img/tours/${bookedTour.imageCover}`,
                 ],
               },
               unit_amount: bookedTour.price * 100,
